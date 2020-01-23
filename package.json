@@ -9,7 +9,8 @@
     "start:dev": "TS_NODE_TRANSPILE_ONLY=true TS_NODE_FILES=true nodemon --nolazy -r ts-node/register --inspect=0.0.0.0:23001 -e ts,js,json,md --watch src --watch node_modules/@davis src/app.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src/**/*.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "npm run build"
   },
   "bin": {
     "maverick": "./dist/index.js"
