@@ -60,14 +60,14 @@ export class Maverick {
         await this.compose.up(this.args);
       }
 
+      if (this.options.ps) {
+        hasRun = true;
+        await this.compose.ps();
+      }
+
       if (this.options.list) {
         hasRun = true;
         this.flightControl.list(...this.args);
-      }
-
-      if (this.options.ps) {
-        hasRun = true;
-        await this.flightControl.ps();
       }
 
       if (this.options.ngrok) {

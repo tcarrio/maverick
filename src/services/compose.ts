@@ -131,6 +131,11 @@ export class ComposeService {
     await this.runCommands(commands);
   }
 
+  @GenerateDockerCompose()
+  public async ps() {
+    await this.runCommands([[this.compose, [...this.bufferArgs, "ps"], { ...this.spawnOpts }]]);
+  }
+
   private async runCommands(
     commands: Command[],
     delayTime: number = 1000,

@@ -1,15 +1,10 @@
 import fs, { existsSync } from "fs";
 import yaml from "js-yaml";
-import template from "lodash.template";
 import path from "path";
 import { Service } from "typedi";
 import { Logger } from "../services/logger";
-import {
-  ConfigFileNotFoundError,
-  InvalidConfigFileError,
-  ProjectNotFoundError,
-} from "../util/errors";
-import { MaverickRootConfig, Templates, TemplateOptions } from "../types";
+import { MaverickRootConfig } from "../types";
+import { ProjectNotFoundError } from "../util/errors";
 import { validateConfig } from "./validator";
 
 @Service()
@@ -23,7 +18,6 @@ export class Config {
   public readonly moonrakerName: string;
   public readonly moonrakerURL: string;
   public readonly projectRoot: string;
-  public readonly templates: Templates;
 
   public constructor(private logger: Logger) {
     this.cwd = process.cwd();
@@ -42,8 +36,6 @@ export class Config {
       "https://bitbucket.lab.dynatrace.org/scm/dav/moonraker.git";
 
     this.prerequisites = ["mysql", "create-db", "migrate-db"];
-
-    this.templates = this.createTemplates();
 
     const { projectConfig, internalConfig } = this.loadConfig();
     this.projectConfig = projectConfig;
@@ -93,7 +85,7 @@ export class Config {
         attempts++;
         if (attempts === maxTraversals) {
           this.logger.error(
-            `Traversed ${maxTraversals} parent folders -- giving up`,
+            `Traversed ${maxTraversals} parent folders -- giving up`
           );
         }
       }
@@ -101,47 +93,6 @@ export class Config {
 
     this.logger.error("A valid Maverick project could not be found");
     throw new ProjectNotFoundError();
-  }
-
-  private createTemplates(): Templates {
-    this.logger.trace("Creating templates from @davis/maverick");
-    let raw!: TemplateOptions;
-    let templates: Templates = {};
-
-    const defaultTemplatePath = path.join(
-      __dirname,
-      "..",
-      "..",
-      "templates.yml",
-    );
-    if (!fs.existsSync(defaultTemplatePath)) {
-      throw new ConfigFileNotFoundError();
-    }
-
-    this.logger.trace("Loading project config:", defaultTemplatePath);
-    const content = fs.readFileSync(defaultTemplatePath, "utf-8");
-    const parsed = yaml.load(content);
-    if (!parsed.templates) {
-      throw new InvalidConfigFileError();
-    }
-    raw = Object.assign({}, parsed.templates) as TemplateOptions;
-
-    const projectConfigPath = path.join(this.projectRoot, "templates.yml");
-    if (fs.existsSync(projectConfigPath)) {
-      this.logger.trace("Loading project config:", projectConfigPath);
-      const content = fs.readFileSync(projectConfigPath, "utf-8");
-      const parsed = yaml.load(content);
-      if (parsed.templates) {
-        raw = Object.assign({}, parsed.templates) as TemplateOptions;
-      }
-    }
-
-    for (const key of Object.keys(raw)) {
-      this.logger.trace("Setting template", key);
-      templates[key] = template(raw![key]);
-    }
-
-    return templates;
   }
 
   private loadConfig(): {
@@ -157,13 +108,13 @@ export class Config {
       networks: [],
       workspaceDir: "/opt",
       language: "typescript",
-      projectType: "lerna",
+      projectType: "lerna"
     };
 
     const loadedConfig = yaml.load(
       fs
         .readFileSync(path.join(this.projectRoot, "maverick.yml"))
-        .toString("utf8"),
+        .toString("utf8")
     );
 
     const projectConfig = validateConfig(loadedConfig, internalConfig);

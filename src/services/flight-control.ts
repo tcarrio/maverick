@@ -1,46 +1,34 @@
 import { Service } from "typedi";
 import { Logger } from "./logger";
 import { Config } from "../config";
-import yaml from "js-yaml";
 import fs from "fs";
 import path from "path";
-import { ReadComposeError, InvalidArgumentsError } from "../util/errors";
-import { Runner } from "./process";
+import { InvalidArgumentsError } from "../util/errors";
+import { GenerateDockerCompose } from "../util/generate-compose";
+import { ComposeBuilder } from "./builder";
 
 @Service()
 export class FlightControlService {
-  private readonly file: string = "docker-compose.yml";
   public constructor(
     private logger: Logger,
     private config: Config,
-    private runner: Runner,
+    private composeBuilder: ComposeBuilder,
   ) {}
 
-  public list(filter?: string) {
-    try {
-      const filePath = path.join(this.config.projectRoot, this.file);
-      const content = fs.readFileSync(filePath, "utf-8");
-      const compose = yaml.safeLoad(content);
+  @GenerateDockerCompose()
+  public async list(filter?: string) {
+    const compose = await this.composeBuilder.getDefinition();
 
-      if (compose.services) {
-        const services = Object.keys(compose.services);
-        const svcToLog = services
-          .filter(s => s.indexOf(filter || "") > -1)
-          .map(s => "\n\t" + s)
-          .join("");
-        this.logger.info("Found the following services:", svcToLog);
-      } else {
-        this.logger.info("Services were not found in the docker-compose.yml");
-      }
-    } catch {
-      throw new ReadComposeError();
+    if (compose.services) {
+      const services = Object.keys(compose.services);
+      const svcToLog = services
+        .filter(s => s.indexOf(filter || "") > -1)
+        .map(s => "\n\t" + s)
+        .join("");
+      this.logger.info("Found the following services:", svcToLog);
+    } else {
+      this.logger.info("Services were not found in the docker-compose.yml");
     }
-  }
-
-  public async ps() {
-    await this.runner.spawn(this.config.compose, ["ps"], {
-      cwd: this.config.projectRoot,
-    });
   }
 
   public ngrok(...args: string[]) {
