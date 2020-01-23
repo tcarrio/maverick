@@ -1,6 +1,6 @@
 {
   "name": "@davis/maverick",
-  "version": "1.0.1",
+  "version": "0.1.0",
   "description": "Orchestrated containerized development for monorepositories",
   "main": "dist/index.js",
   "scripts": {
