@@ -1,0 +1,26 @@
+sudo: required
+
+language: node_js
+node_js:
+  - 8
+  - 10
+  - 12
+  - 13
+
+before_install:
+  - npm ci
+  - npm run build
+
+after_success:
+  - |
+    if [ "$TRAVIS_PULL_REQUEST" == "false" ]
+    then 
+      echo "Updating maverick source and package..."
+      if ! [ "$(jq -r '.name' package.json)" = "@0xc/maverick" ]; then
+        echo "Not in the correct folder to update maverick"
+      elif [ "$(npm view @0xc/maverick dist-tags.latest)" = "$(jq -r '.version' package.json)" ]; then
+        echo "Same version is already published"
+      else
+        npm publish --access=public && git push upstream master && npm remove -g . && npm i -g .
+      fi
+    fi
