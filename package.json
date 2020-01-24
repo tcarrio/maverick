@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -35,24 +35,24 @@
     "@types/bunyan": "^1.8.6",
     "@types/bunyan-format": "^0.2.0",
     "@types/glob": "^7.1.1",
-    "@types/jest": "^24.0.9",
+    "@types/jest": "^24.9.1",
     "@types/js-yaml": "^3.12.1",
     "jest": "^24.9.0",
     "jest-junit": "^6.4.0",
-    "nodemon": "^1.18.10",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^8.0.2",
+    "nodemon": "^1.19.4",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.6.2",
     "typescript": "3.4.5"
   },
   "dependencies": {
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
-    "commander": "^3.0.0",
-    "glob": "^7.1.3",
+    "commander": "^3.0.2",
+    "glob": "^7.1.6",
     "joi": "^14.3.1",
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.13",
-    "source-map-support": "^0.5.10",
+    "source-map-support": "^0.5.16",
     "typedi": "^0.8.0"
   }
 }
