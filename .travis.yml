@@ -6,13 +6,13 @@ node_js:
   - 12
 
 before_install:
-  - printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+  - printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
   - npm ci
   - npm run build
 
 deploy:
   provider: npm
   email: tom@carrio.dev
-  api_key: $NPM_TOKEN
+  api_key: ${NPM_TOKEN}
   on:
     branch: master
