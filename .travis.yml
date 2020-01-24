@@ -23,6 +23,12 @@ after_success:
       elif [ "$(npm view @0xc/maverick dist-tags.latest)" = "$(jq -r '.version' package.json)" ]; then
         echo "Same version is already published"
       else
-        npm publish --access=public && git push upstream master && npm remove -g . && npm i -g .
+        echo "//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}" > $HOME/.npmrc
+        npm publish --access=public
+        rm -f $HOME/.npmrc
       fi
     fi
+
+env:
+  global:
+    - secure: "OxbEO2hEdYVSJnFZ2Zu+Rcow+zSJkc0XhvGpvvmElKxfOWBp7m0ZgbqcANua9yAf6r1JwjQT8m9w6BVxeyAnARvRgJdy0oqO33P7U3hTqpgdpZ5tz+yKNDWqoepow1JwsIwOFPzWk6YeLQag1o4VuSNlf1ILELd1Wo2tY3O58u7qs+hI0iIcTazbtFc+/G/UUUh8g/4fEXV7V0M4YurlUjaIOrXKpgboOZmvTavOIEXhfUolg3ziO+y7sMlxkr1Q6fVBAxEOtbvhZ/U2PuH/VYlQvvJ2VhD2ZMxusPfIst+bbrAEoQhlFG1NxB2EymvudVp2uGsum1AEICEqNcYRA4EzLfgHrXgNZx1SWuZuJw/IRg8exX92HBE1F5t6VGwIWRtLq1ftt4t8ChgVGVnl7gWtnanXatihRLVZMB1hIwq1LlQjzuwO4KmopEvlYU6s1PJsYrTL9nyhGEHRgFgSjrIEu3vnCXnL3Q2VXk3mHcQTr/ZiGI2yni8xN87ujMWnb/fF2u/dZ/MlUYU7xvr5bFRLC8DsBI8WwJc08rEwz1wTNHkgeXZSDLlOG8NVLndbsewZBcUrRuUUenjfGEQoSoOukEoxN8wo6ut1N+nNrmx+RF04XIFj5z/U3LoFe/sFmTknYpOwh8oFWudXLlS7cM0I1NOEs7Q9bGHGLCbJGHY="
