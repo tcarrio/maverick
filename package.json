@@ -11,7 +11,7 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src/**/*.ts",
     "build": "tsc",
-    "prebuild:prod": "[ -d ./dist ] && rm -rf ./dist || :",
+    "prebuild:prod": "[ -d dist ] && rm -rf dist || true",
     "build:prod": "tsc -p tsconfig.prod.json",
     "prepare": "npm run build:prod"
   },
