@@ -3,12 +3,13 @@ import { Command } from "commander";
 import { getVersion } from "./version";
 import { getDescription } from "./description";
 import { Service } from "typedi";
+import { internalName } from "../globals";
 
 @Service()
 export class ProgramBuilder {
   private program: Command;
   public constructor() {
-    this.program = new Command("maverick")
+    this.program = new Command(internalName)
       .description(getDescription())
       .version(getVersion())
       .usage("[action]")

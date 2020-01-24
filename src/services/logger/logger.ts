@@ -2,6 +2,7 @@ import "reflect-metadata";
 import bunyan from "bunyan";
 import Format from "bunyan-format";
 import { Service } from "typedi";
+import { internalName } from "../../globals";
 
 const DEFAULT_LOG_LEVEL = "info";
 
@@ -10,7 +11,7 @@ export class Logger extends bunyan {
   public constructor() {
     super({
       level: getLevel(),
-      name: "maverick",
+      name: internalName,
       serializers: {
         err: bunyan.stdSerializers.err
       },

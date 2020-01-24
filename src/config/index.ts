@@ -7,6 +7,8 @@ import { MaverickRootConfig, SetupConfiguration } from "../types";
 import { ProjectNotFoundError } from "../util/errors";
 import { validateConfig } from "./validator";
 import { IConfig } from "./interface";
+import { getLinuxTmpFolder } from "./tmp-folder";
+import { dockerCompose, internalName } from "../globals";
 
 @Service()
 export class Config implements IConfig {
@@ -19,6 +21,7 @@ export class Config implements IConfig {
   public readonly config!: MaverickRootConfig;
   public readonly projectRoot!: string;
   public readonly setup!: SetupConfiguration;
+  public readonly tmpFolder?: string;
 
   public constructor(private logger: Logger) {
     this.cwd = process.cwd();
@@ -27,8 +30,8 @@ export class Config implements IConfig {
       this.projectRoot = this.findRoot();
 
       this.config = this.loadConfig();
-      this.compose = this.config.compose || "docker-compose";
-      this.projectName = this.config.name || "maverick";
+      this.compose = this.config.compose || dockerCompose;
+      this.projectName = this.config.name || internalName;
 
       const setupPath = path.join(
         this.projectRoot,
@@ -36,6 +39,8 @@ export class Config implements IConfig {
       );
       const exists = existsSync(setupPath);
       this.setup = { exists, path: exists ? setupPath : "" };
+
+      this.tmpFolder = this.getTmpFolder();
 
       this.valid = true;
     } catch (err) {
@@ -54,7 +59,7 @@ export class Config implements IConfig {
 
   private isLerna(): boolean {
     try {
-      this.findFile("lerna.json", 50);
+      this.findFile("lerna.json");
       return true;
     } catch (err) {
       return false;
@@ -63,7 +68,7 @@ export class Config implements IConfig {
 
   private isNx(): boolean {
     try {
-      this.findFile("nx_file_or_whatever", 50);
+      this.findFile("nx_file_or_whatever");
       return true;
     } catch (err) {
       return false;
@@ -117,6 +122,15 @@ export class Config implements IConfig {
     projectConfig.dotenv = existsSync(path.join(this.projectRoot, ".env"));
 
     return projectConfig;
+  }
+
+  private getTmpFolder(): string | undefined {
+    switch (process.platform) {
+      case "linux":
+        getLinuxTmpFolder(this.projectName);
+      default:
+        return undefined;
+    }
   }
 }
 
