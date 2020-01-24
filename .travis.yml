@@ -6,6 +6,7 @@ node_js:
   - 12
 
 before_install:
+  - printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
   - npm ci
   - npm run build
 
