@@ -8,18 +8,13 @@ node_js:
   - 10
   - 12
   - 13
-
 before_install:
   - npm ci
   - npm run build
-
 deploy:
   provider: npm
-  email: "tom@carrio.dev"
-  api_key: "$NPM_ACCESS_TOKEN"
+  email: tom@carrio.dev
+  api_key:
+    secure: gkTK3SugUuHiyFk15AqSEBNQRzi3TVkFza5HQKVj4TuPrMk7ZqXSOHcFeyMZX7iC7dtQQAclFqOx9Xm00GBXk3nAQOoRGbzKWRHZMUFD+UYFJRyOhGVJ9jWww+dL0qZXBo4o0UwuCOQDtYI/Lyn7PzkDUVTAloex/G58HFCTCwJGTacfNxMNVPQaseT/EDU8CMZDhTXMUZtHSShUE1kU7gKfYTtncB1OZkuDBy70ppN3B3NfBwW96G+5iqlxMxrzsRbcyxJlZshjeY03XSSz5LRfLQNBu8MDBg8F//7w4kcUB18jM5E3Kb01/R5OM0csJTsBz4pG0d/lbR7rvx7S9ModQc2BWfogTUizkwWcsQ81w7nXx+XL06ON5gqRaGE9EgyqQ5s6frAdLFCKrzAfD+kwCjTzkf+wzeJHYjM9zzW15r2+shZ/GWq92q8PglYCV3mpgz4F712vEjx+BAqYuqpT4y1knWdhnmwjf/zaxAJkznEe7OjCJsaVoz7TS5g0T7ehvnL/xE6WSPsiS2bne10aIKYbUSRnHKvDd3UNkdTuJ+rvH2MW2YtmO5fT/cx93Xm1ZR5v0zOuR7Z8lboWZD2PAH563KsY9Yy3ZBDiQeZOIQy5sFXQHZrGXiQxxISg5lc9Op6Vw7zGv4ImZZB4w0ETFG/jBXi03DyKhEhx3PU=
   on:
     branch: master
-
-env:
-  global:
-    - secure: "OxbEO2hEdYVSJnFZ2Zu+Rcow+zSJkc0XhvGpvvmElKxfOWBp7m0ZgbqcANua9yAf6r1JwjQT8m9w6BVxeyAnARvRgJdy0oqO33P7U3hTqpgdpZ5tz+yKNDWqoepow1JwsIwOFPzWk6YeLQag1o4VuSNlf1ILELd1Wo2tY3O58u7qs+hI0iIcTazbtFc+/G/UUUh8g/4fEXV7V0M4YurlUjaIOrXKpgboOZmvTavOIEXhfUolg3ziO+y7sMlxkr1Q6fVBAxEOtbvhZ/U2PuH/VYlQvvJ2VhD2ZMxusPfIst+bbrAEoQhlFG1NxB2EymvudVp2uGsum1AEICEqNcYRA4EzLfgHrXgNZx1SWuZuJw/IRg8exX92HBE1F5t6VGwIWRtLq1ftt4t8ChgVGVnl7gWtnanXatihRLVZMB1hIwq1LlQjzuwO4KmopEvlYU6s1PJsYrTL9nyhGEHRgFgSjrIEu3vnCXnL3Q2VXk3mHcQTr/ZiGI2yni8xN87ujMWnb/fF2u/dZ/MlUYU7xvr5bFRLC8DsBI8WwJc08rEwz1wTNHkgeXZSDLlOG8NVLndbsewZBcUrRuUUenjfGEQoSoOukEoxN8wo6ut1N+nNrmx+RF04XIFj5z/U3LoFe/sFmTknYpOwh8oFWudXLlS7cM0I1NOEs7Q9bGHGLCbJGHY="
