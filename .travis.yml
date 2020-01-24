@@ -1,15 +1,17 @@
 language: node_js
 os:
   - linux
+
 node_js:
   - 12
+
 before_install:
   - npm ci
   - npm run build
+
 deploy:
   provider: npm
   email: tom@carrio.dev
-  api_key:
-    secure: gkTK3SugUuHiyFk15AqSEBNQRzi3TVkFza5HQKVj4TuPrMk7ZqXSOHcFeyMZX7iC7dtQQAclFqOx9Xm00GBXk3nAQOoRGbzKWRHZMUFD+UYFJRyOhGVJ9jWww+dL0qZXBo4o0UwuCOQDtYI/Lyn7PzkDUVTAloex/G58HFCTCwJGTacfNxMNVPQaseT/EDU8CMZDhTXMUZtHSShUE1kU7gKfYTtncB1OZkuDBy70ppN3B3NfBwW96G+5iqlxMxrzsRbcyxJlZshjeY03XSSz5LRfLQNBu8MDBg8F//7w4kcUB18jM5E3Kb01/R5OM0csJTsBz4pG0d/lbR7rvx7S9ModQc2BWfogTUizkwWcsQ81w7nXx+XL06ON5gqRaGE9EgyqQ5s6frAdLFCKrzAfD+kwCjTzkf+wzeJHYjM9zzW15r2+shZ/GWq92q8PglYCV3mpgz4F712vEjx+BAqYuqpT4y1knWdhnmwjf/zaxAJkznEe7OjCJsaVoz7TS5g0T7ehvnL/xE6WSPsiS2bne10aIKYbUSRnHKvDd3UNkdTuJ+rvH2MW2YtmO5fT/cx93Xm1ZR5v0zOuR7Z8lboWZD2PAH563KsY9Yy3ZBDiQeZOIQy5sFXQHZrGXiQxxISg5lc9Op6Vw7zGv4ImZZB4w0ETFG/jBXi03DyKhEhx3PU=
+  api_key: $NPM_TOKEN
   on:
     branch: master
