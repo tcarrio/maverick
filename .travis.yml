@@ -13,22 +13,10 @@ before_install:
   - npm ci
   - npm run build
 
-after_success:
-  - |
-    if [ "$TRAVIS_PULL_REQUEST" == "false" ]
-    then 
-      echo "Updating maverick source and package..."
-      sudo apt-get update && sudo apt-get install -y jq
-      if ! [ "$(jq -r '.name' package.json)" = "@0xc/maverick" ]; then
-        echo "Not in the correct folder to update maverick"
-      elif [ "$(npm view @0xc/maverick dist-tags.latest)" = "$(jq -r '.version' package.json)" ]; then
-        echo "Same version is already published"
-      else
-        echo "//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}" > $HOME/.npmrc
-        npm publish --access=public
-        rm -f $HOME/.npmrc
-      fi
-    fi
+deploy:
+  provider: npm
+  email: "tom@carrio.dev"
+  api_key: "$NPM_ACCESS_TOKEN"
 
 env:
   global:
