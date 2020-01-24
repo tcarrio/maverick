@@ -6,10 +6,10 @@ import { Logger } from "../services/logger";
 import { MaverickRootConfig, SetupConfiguration } from "../types";
 import { ProjectNotFoundError } from "../util/errors";
 import { validateConfig } from "./validator";
-import { AbstractConfig } from "./abstract";
+import { IConfig } from "./interface";
 
 @Service()
-export class Config extends AbstractConfig {
+export class Config implements IConfig {
   /** if valid, all following fields will be set */
   public readonly valid: boolean = false;
 
@@ -21,7 +21,6 @@ export class Config extends AbstractConfig {
   public readonly setup!: SetupConfiguration;
 
   public constructor(private logger: Logger) {
-    super();
     this.cwd = process.cwd();
     
     try {

@@ -4,7 +4,7 @@ import { Container } from "typedi";
 import { Maverick } from "./services/maverick";
 
 /** plugin imports */
-import { AbstractConfig } from "./config/abstract";
+import { IConfig } from "./config/interface";
 import { Logger } from "./services/logger";
 import { Runner } from "./services/process";
 
@@ -24,4 +24,4 @@ function startupError(err: Error) {
 main();
 
 /** exports for plugins */
-export { AbstractConfig , Logger, Runner };
+export { IConfig , Logger, Runner };
