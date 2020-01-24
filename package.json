@@ -13,7 +13,8 @@
     "build": "tsc",
     "prebuild:prod": "[ -d dist ] && rm -rf dist || true",
     "build:prod": "tsc -p tsconfig.prod.json",
-    "prepare": "npm run build:prod"
+    "prepare": "npm run build:prod",
+    "test": "jest"
   },
   "files": [
     "dist"
