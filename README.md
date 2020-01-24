@@ -1,3 +1,5 @@
+[![npm (scoped)](https://img.shields.io/npm/v/@0xc/maverick)](https://www.npmjs.com/package/@0xc/maverick) [![npm](https://img.shields.io/npm/dt/@0xc/maverick)](https://www.npmjs.com/package/@0xc/maverick) [![GitHub issues](https://img.shields.io/github/issues/tcarrio/maverick)](https://github.com/tcarrio/maverick/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/tcarrio/maverick)](https://github.com/tcarrio/maverick/pulls) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/tcarrio/maverick)
+
 # Maverick
 
 ## Update 2020-01-22
