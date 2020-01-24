@@ -44,7 +44,7 @@ export class Config implements IConfig {
     try {
       return this.findFile("maverick.yml");
     } catch (err) {
-      this.logger.error("A valid Maverick project could not be found");
+      this.logger.debug("A valid Maverick project could not be found");
       throw err;
     }      
   }
@@ -97,18 +97,6 @@ export class Config implements IConfig {
   }
 
   private loadConfig(): MaverickRootConfig {
-    const defaultConfig: MaverickRootConfig = {
-      batch: {},
-      images: {},
-      packages: {},
-      services: {},
-      overrides: {},
-      networks: [],
-      workspaceDir: "/opt",
-      language: "typescript",
-      projectType: "lerna"
-    };
-
     const loadedConfig = yaml.load(
       fs
         .readFileSync(path.join(this.projectRoot, "maverick.yml"))
@@ -128,3 +116,15 @@ export class Config implements IConfig {
     return projectConfig;
   }
 }
+
+export const defaultConfig: MaverickRootConfig = {
+  batch: {},
+  images: {},
+  packages: {},
+  services: {},
+  overrides: {},
+  networks: [],
+  workspaceDir: "/opt",
+  language: "typescript",
+  projectType: "lerna",
+};

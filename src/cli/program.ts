@@ -48,6 +48,10 @@ export class ProgramBuilder {
         "-g, --generate",
         "Generate a new Docker Compose using the maverick.yml config",
       )
+      .option(
+        "-i, --init",
+        "Initialize a Maverick configuration in the current directory",
+      )
       .parse(process.argv);
   }
 
@@ -55,14 +59,15 @@ export class ProgramBuilder {
     const options = {
       build: this.program.build,
       down: this.program.down,
-      up: this.program.up,
-      restart: this.program.restart,
-      reload: this.program.reload,
-      setup: this.program.setup,
-      list: this.program.list,
-      ps: this.program.ps,
-      ngrok: this.program.ngrok,
       generate: this.program.generate,
+      init: this.program.init,
+      list: this.program.list,
+      ngrok: this.program.ngrok,
+      ps: this.program.ps,
+      reload: this.program.reload,
+      restart: this.program.restart,
+      setup: this.program.setup,
+      up: this.program.up,
     };
 
     return options;
@@ -94,12 +99,13 @@ export type OptionalString = string | boolean;
 export type Options = Partial<{
   build: OptionalStrings;
   down: OptionalStrings;
-  up: OptionalStrings;
-  restart: OptionalStrings;
-  reload: OptionalStrings;
-  setup: OptionalString;
-  list: OptionalString;
-  ps: boolean;
-  ngrok: boolean;
   generate: boolean;
+  init: boolean;
+  list: OptionalString;
+  ngrok: boolean;
+  ps: boolean;
+  reload: OptionalStrings;
+  restart: OptionalStrings;
+  setup: OptionalString;
+  up: OptionalStrings;
 }>;

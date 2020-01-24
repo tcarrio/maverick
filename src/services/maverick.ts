@@ -6,6 +6,7 @@ import { Logger } from "./logger";
 import { SetupService } from "./setup";
 import { Generator } from "./generator";
 import { Config } from "../config";
+import { InitService } from "./init";
 
 @Service()
 export class Maverick {
@@ -19,6 +20,7 @@ export class Maverick {
     private flightControl: FlightControlService,
     private program: ProgramBuilder,
     private generator: Generator,
+    private initService: InitService,
     private config: Config,
   ) {
     this.options = program.getOptions();
@@ -30,6 +32,10 @@ export class Maverick {
     let hasRun = false;
 
     try {
+      if (this.options.init) {
+        return this.initService.init();
+      }
+
       if (this.options.setup) {
         const args = parseString(this.options.setup);
         return this.runSetup(...args);
@@ -37,6 +43,7 @@ export class Maverick {
 
       // No further actions are allowed without a valid config
       if (!this.config.valid) {
+        console.error("Uh oh, no Maverick configuration was found. Run `maverick --init` to get started.\n\n");
         this.program.getHelp();
         return;
       }
@@ -74,7 +81,7 @@ export class Maverick {
 
       if (this.options.list) {
         hasRun = true;
-        this.flightControl.list(...this.args);
+        await this.flightControl.list(...this.args);
       }
 
       if (this.options.ngrok) {
@@ -85,7 +92,7 @@ export class Maverick {
       if (this.options.generate) {
         hasRun = true;
         this.logger.trace("Generating docker-compose.yml");
-        this.generator.generate(true);
+        await this.generator.generate(true);
       }
     } catch (err) {}
 
