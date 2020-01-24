@@ -19,7 +19,7 @@ export class ComposeService {
     images: false,
     packages: true,
     services: true,
-    batch: true,
+    batch: true
   };
 
   private _composeBuffer: Buffer | null = null;
@@ -30,12 +30,12 @@ export class ComposeService {
     private runner: Runner,
     private config: Config,
     private composeBuilder: ComposeBuilder,
-    private generator: Generator,
+    private generator: Generator
   ) {
     this.compose = config.compose;
     this.spawnOpts = {
       cwd: this.config.projectRoot,
-      stdio: [null, process.stdout, process.stderr],
+      stdio: [null, process.stdout, process.stderr]
     };
   }
 
@@ -51,9 +51,9 @@ export class ComposeService {
           [
             this.compose,
             [...this.bufferArgs, "up", "-d", "--no-recreate", ...services],
-            this.spawnOpts,
-          ] as Command,
-      ),
+            this.spawnOpts
+          ] as Command
+      )
     ];
 
     await this.runCommands(commands);
@@ -71,15 +71,15 @@ export class ComposeService {
             [
               this.compose,
               [...this.bufferArgs, "stop", ...services],
-              this.spawnOpts,
-            ] as Command,
-        ),
+              this.spawnOpts
+            ] as Command
+        )
       );
     } else {
       commands.push([
         this.compose,
         [...this.bufferArgs, "down"],
-        this.spawnOpts,
+        this.spawnOpts
       ]);
     }
 
@@ -100,9 +100,9 @@ export class ComposeService {
           [
             this.compose,
             [...this.bufferArgs, "restart", ...services],
-            this.spawnOpts,
-          ] as Command,
-      ),
+            this.spawnOpts
+          ] as Command
+      )
     ];
 
     await this.runCommands(commands);
@@ -112,7 +112,7 @@ export class ComposeService {
   public async build(args: string[]) {
     const phases = await this.getPhases(args, {
       ...this.defaultPhaseIncludeOptions,
-      images: true,
+      images: true
     });
 
     this.logBuild(phases.length);
@@ -123,9 +123,9 @@ export class ComposeService {
           [
             this.compose,
             [...this.bufferArgs, "build", ...services],
-            { ...this.spawnOpts },
-          ] as Command,
-      ),
+            { ...this.spawnOpts }
+          ] as Command
+      )
     ];
 
     await this.runCommands(commands);
@@ -133,12 +133,14 @@ export class ComposeService {
 
   @GenerateDockerCompose()
   public async ps() {
-    await this.runCommands([[this.compose, [...this.bufferArgs, "ps"], { ...this.spawnOpts }]]);
+    await this.runCommands([
+      [this.compose, [...this.bufferArgs, "ps"], { ...this.spawnOpts }]
+    ]);
   }
 
   private async runCommands(
     commands: Command[],
-    delayTime: number = 1000,
+    delayTime: number = 1000
   ): Promise<void> {
     const buffer = await this.composeBuffer();
     if (commands.length === 0) {
@@ -150,7 +152,7 @@ export class ComposeService {
 
     const bufferOpts = {
       ...opts,
-      input: buffer,
+      input: buffer
     };
 
     this.runner.spawnSync(command, args, bufferOpts);
@@ -192,14 +194,14 @@ export class ComposeService {
   private async getPhases(
     args: string[],
     includeOptions: PhaseIncludeOptions = this.defaultPhaseIncludeOptions,
-    includeDependencies: boolean = false,
+    includeDependencies: boolean = false
   ) {
     const phaseOrdering: ServiceConfigKey[] = [
       "images",
       "infrastructure",
       "batch",
       "packages",
-      "services",
+      "services"
     ];
 
     // Build out the phases that Maverick should load Docker services with. This
@@ -215,7 +217,7 @@ export class ComposeService {
               ? catLists
               : [...catLists, catList]
             : [catList],
-        [] as string[][],
+        [] as string[][]
       );
 
     // Calculate the final list of services based on dependency inclusion
@@ -236,7 +238,7 @@ export class ComposeService {
   }
 
   private async getDependenciesOfServices(
-    inputSvcs: string[],
+    inputSvcs: string[]
   ): Promise<string[]> {
     if (!inputSvcs || inputSvcs.length === 0) {
       return [];
@@ -259,7 +261,7 @@ export class ComposeService {
 
           const isDependency = searchNames.reduce(
             (found, name) => found || dependsOn.indexOf(name) !== -1,
-            false,
+            false
           );
           return isDependency;
         });
@@ -274,8 +276,8 @@ export class ComposeService {
       ...dependencies.reduce(
         (set, depSet) =>
           Array.from(depSet).reduce((s, name) => s.add(name), set),
-        new Set(),
-      ),
+        new Set()
+      )
     ];
   }
 

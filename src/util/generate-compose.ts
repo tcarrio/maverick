@@ -9,7 +9,7 @@ export function GenerateDockerCompose(): MethodDecorator {
   return function(
     _target: Record<string, any>,
     _key: string | symbol,
-    descriptor: PropertyDescriptor,
+    descriptor: PropertyDescriptor
   ) {
     const generator = Container.get(Generator);
     const originalMethod = descriptor.value;

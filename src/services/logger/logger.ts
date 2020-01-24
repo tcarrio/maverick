@@ -12,9 +12,9 @@ export class Logger extends bunyan {
       level: getLevel(),
       name: "maverick",
       serializers: {
-        err: bunyan.stdSerializers.err,
+        err: bunyan.stdSerializers.err
       },
-      stream: new Format({ outputMode: "short" }),
+      stream: new Format({ outputMode: "short" })
     });
   }
 
@@ -85,11 +85,11 @@ export class Logger extends bunyan {
         Object.assign(obj, {
           user: message.user,
           tenant: message.tenant,
-          source: message.source,
+          source: message.source
         });
       } else if (message instanceof Error) {
         Object.assign(obj, {
-          err: message,
+          err: message
         });
       } else {
         Object.assign(obj, message);

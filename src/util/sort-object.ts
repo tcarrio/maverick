@@ -7,8 +7,8 @@ export function sortObjectKeys(obj: Indexable): Indexable {
       (map, key) => ({
         ...map,
         [key]:
-          typeof obj[key] === "object" ? sortObjectKeys(obj[key]) : obj[key],
+          typeof obj[key] === "object" ? sortObjectKeys(obj[key]) : obj[key]
       }),
-      {},
+      {}
     );
 }

@@ -4,7 +4,7 @@ import { union } from "../util/union";
 
 export function validateConfig(
   config: MaverickRootConfig,
-  defaults: MaverickRootConfig,
+  defaults: MaverickRootConfig
 ): MaverickRootConfig {
   if (!config) {
     throw new InvalidConfigFileError("maverick.yml file was invalid");

@@ -7,7 +7,7 @@ const digitsStr =
 const digits = digitsStr.split("");
 const digitsMap: Indexable = digits.reduce(
   (map, digit, i) => ({ ...map, [i]: digit }),
-  {},
+  {}
 );
 
 export class Base64 {

@@ -21,7 +21,7 @@ export class Maverick {
     private program: ProgramBuilder,
     private generator: Generator,
     private initService: InitService,
-    private config: Config,
+    private config: Config
   ) {
     this.options = program.getOptions();
     this.args = program.getArgs();
@@ -43,7 +43,9 @@ export class Maverick {
 
       // No further actions are allowed without a valid config
       if (!this.config.valid) {
-        console.error("Uh oh, no Maverick configuration was found. Run `maverick --init` to get started.\n\n");
+        console.error(
+          "Uh oh, no Maverick configuration was found. Run `maverick --init` to get started.\n\n"
+        );
         this.program.getHelp();
         return;
       }

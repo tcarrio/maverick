@@ -22,7 +22,7 @@ export function union<T extends ValidTypes>(...args: T[]): T {
     return args.reduce(
       // @ts-ignore
       (list, arg) => [...list, ...arg.filter(x => list.indexOf(x) === -1)],
-      [],
+      []
     );
   }
 
@@ -33,13 +33,13 @@ export function union<T extends ValidTypes>(...args: T[]): T {
 
   return args.reduce(
     (processed, obj) => unionObject(processed, obj as Indexable),
-    {},
+    {}
   ) as T;
 }
 
 export function unionObject<T1 extends Indexable, T2 extends Indexable>(
   a: T1,
-  b: T2,
+  b: T2
 ): T1 | T2 | (T1 & T2) {
   const ak: Set<keyof T1> = new Set(Object.getOwnPropertyNames(a));
   const bk: Set<keyof T2> = new Set(Object.getOwnPropertyNames(b));
@@ -52,7 +52,7 @@ export function unionObject<T1 extends Indexable, T2 extends Indexable>(
 
   // @ts-ignore: this is failing to allow intersecting keys?
   const sharedKeys: (keyof T1 & keyof T2)[] = [...ak].filter(k =>
-    bk.has(k as any),
+    bk.has(k as any)
   );
 
   const shared = sharedKeys.reduce((map, key) => {
@@ -64,13 +64,13 @@ export function unionObject<T1 extends Indexable, T2 extends Indexable>(
   return {
     ...onlyA,
     ...onlyB,
-    ...shared,
+    ...shared
   };
 }
 
 function filterObjectToKeys<T extends Indexable, K extends keyof T>(
   obj: T,
-  keys: (keyof T)[],
+  keys: (keyof T)[]
 ): Pick<T, K> {
   const filteredObject: any = {};
   Object.getOwnPropertyNames(obj)

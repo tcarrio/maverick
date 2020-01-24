@@ -1,6 +1,6 @@
 import {
   DataSourceConfiguration,
-  MaverickConfigDefaults,
+  MaverickConfigDefaults
 } from "../../../types";
 import { union } from "../../../util/union";
 import { defaultMinioConfiguration } from "./minio";
@@ -15,7 +15,7 @@ type BuiltinMap = {
 type BuiltinGetters = {
   [key in keyof DataSourceConfiguration]: (
     definition: DataSourceConfiguration[key],
-    defaults: MaverickConfigDefaults,
+    defaults: MaverickConfigDefaults
   ) => DataSourceConfiguration[key];
 };
 
@@ -23,7 +23,7 @@ function getBuiltin<T extends keyof DataSourceConfiguration>(
   this: BuiltinMap,
   key: T,
   definition: DataSourceConfiguration[T],
-  defaults: MaverickConfigDefaults,
+  defaults: MaverickConfigDefaults
 ) {
   if (definition === undefined) {
     return undefined;
@@ -42,7 +42,7 @@ const builtinMap: BuiltinMap = {
   ngrok: defaultNgrokConfiguration,
   redis: defaultRedisConfiguration,
   // TODO: Implement postgres
-  postgresql: {},
+  postgresql: {}
 };
 
 export const builtins: BuiltinGetters = {
@@ -50,5 +50,5 @@ export const builtins: BuiltinGetters = {
   mysql: getBuiltin.bind(builtinMap, "mysql"),
   ngrok: getBuiltin.bind(builtinMap, "ngrok"),
   redis: getBuiltin.bind(builtinMap, "redis"),
-  postgresql: getBuiltin.bind(builtinMap, "postgresql"),
+  postgresql: getBuiltin.bind(builtinMap, "postgresql")
 };

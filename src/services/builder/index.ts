@@ -3,7 +3,7 @@ import path from "path";
 import Container, { Inject } from "typedi";
 import {
   DockerComposeDefinition,
-  DockerComposeService,
+  DockerComposeService
 } from "../../@types/docker-compose";
 import { Config } from "../../config";
 import {
@@ -15,7 +15,7 @@ import {
   MaverickConfigDefaults,
   MaverickDeclaration,
   MaverickServiceConfig,
-  Indexable,
+  Indexable
 } from "../../types";
 import { convertToSafe } from "../../util/safe-name";
 import { union } from "../../util/union";
@@ -23,7 +23,7 @@ import {
   AbstractProjectParser,
   LernaProjectParser,
   NxProjectParser,
-  VoidProjectParser,
+  VoidProjectParser
 } from "../parser";
 import { builtins } from "./infrastructure";
 import { Base64 } from "../../util/base64";
@@ -39,7 +39,7 @@ export class ComposeBuilder {
 
   public constructor(
     @Inject(() => Config) private config: Config,
-    private logger: Logger,
+    private logger: Logger
   ) {}
 
   public async getDefinition(): Promise<DockerComposeDefinition> {
@@ -56,7 +56,7 @@ export class ComposeBuilder {
 
     const overrides = await this.getComposeServices("overrides" as any, {
       config,
-      defaults,
+      defaults
     });
 
     const cfg = { config, defaults, overrides };
@@ -69,7 +69,7 @@ export class ComposeBuilder {
 
     const cInfrastructure = await this.getComposeServices(
       "infrastructure",
-      cfg,
+      cfg
     );
     this.logger.trace("infrastructure contains", cInfrastructure);
 
@@ -88,28 +88,28 @@ export class ComposeBuilder {
       ...cInfrastructure,
       ...cBatch,
       ...cPackages,
-      ...cServices,
+      ...cServices
     };
 
     const { dynamicPackages, dynamicServices } = await this.getDynamicEntries(
       cfg,
-      Object.keys(maverickDefinitions),
+      Object.keys(maverickDefinitions)
     );
 
     const unprocessedServices = {
       ...maverickDefinitions,
       ...dynamicPackages,
-      ...dynamicServices,
+      ...dynamicServices
     };
 
     const services = this.processServicesTemplate(
       unprocessedServices,
-      unprocessedServices,
+      unprocessedServices
     );
 
     this.categoricalServiceLists.infrastructure = [
       ...Object.keys(cBuiltins),
-      ...Object.keys(cInfrastructure),
+      ...Object.keys(cInfrastructure)
     ];
     this.categoricalServiceLists.images = Object.keys(cImages);
     this.categoricalServiceLists.batch = Object.keys(cBatch);
@@ -125,8 +125,8 @@ export class ComposeBuilder {
         ...cServices,
         ...cBuiltins,
         ...dynamicPackages,
-        ...dynamicServices,
-      }),
+        ...dynamicServices
+      })
     };
   }
 
@@ -159,13 +159,13 @@ export class ComposeBuilder {
     const emptyDefaults: MaverickConfigDefaults = { all: {} };
     return union(
       emptyDefaults,
-      this.projectConfig.defaults || {},
+      this.projectConfig.defaults || {}
     ) as MaverickConfigDefaults;
   }
 
   private async getDynamicEntries(
     configuration: BuilderConfiguration,
-    userDefinedPackages: string[],
+    userDefinedPackages: string[]
   ): Promise<DynamicProjectEntries> {
     const parsed = await this.parser.parse();
 
@@ -182,30 +182,30 @@ export class ComposeBuilder {
       .reduce(
         (map, name) => ({
           ...map,
-          [name]: parsed.packages.get(name),
+          [name]: parsed.packages.get(name)
         }),
-        {},
+        {}
       );
 
     this.logger.trace("Built remainingPackages:", remainingPackages);
 
     const packages: ComputedPackageInfo[] = Object.keys(
-      remainingPackages,
+      remainingPackages
     ).reduce(
       (list, name) =>
         remainingPackages[name].type === "package"
           ? [...list, remainingPackages[name]]
           : list,
-      [] as ComputedPackageInfo[],
+      [] as ComputedPackageInfo[]
     );
     const services: ComputedPackageInfo[] = Object.keys(
-      remainingPackages,
+      remainingPackages
     ).reduce(
       (list, name) =>
         remainingPackages[name].type === "service"
           ? [...list, remainingPackages[name]]
           : list,
-      [] as ComputedPackageInfo[],
+      [] as ComputedPackageInfo[]
     );
 
     this.logger.trace("packages");
@@ -220,10 +220,10 @@ export class ComposeBuilder {
           pkg,
           parsed,
           configuration,
-          "packages",
-        ),
+          "packages"
+        )
       }),
-      {},
+      {}
     );
     const dynamicServices: CompleteMaverickDeclaration = services.reduce(
       (map, pkg) => ({
@@ -232,15 +232,15 @@ export class ComposeBuilder {
           pkg,
           parsed,
           configuration,
-          "services",
-        ),
+          "services"
+        )
       }),
-      {},
+      {}
     );
 
     return {
       dynamicPackages,
-      dynamicServices,
+      dynamicServices
     };
   }
 
@@ -248,12 +248,12 @@ export class ComposeBuilder {
     p: ComputedPackageInfo,
     project: ComputedProjectInfo,
     cfg: BuilderConfiguration,
-    type: keyof MaverickConfigDefaults,
+    type: keyof MaverickConfigDefaults
   ): DockerComposeService {
     const name = p.safePackageName;
     const defaults: Partial<DockerComposeService> = {
       ...cfg.defaults.all,
-      ...cfg.defaults[type],
+      ...cfg.defaults[type]
     };
     const override = cfg.overrides && cfg.overrides[name];
 
@@ -278,7 +278,7 @@ export class ComposeBuilder {
 
     const allDependencies = [
       ...p.dependencies.direct,
-      ...p.dependencies.indirect,
+      ...p.dependencies.indirect
     ];
 
     for (const dependencyName of allDependencies) {
@@ -295,7 +295,7 @@ export class ComposeBuilder {
         dependencyName,
         cfg,
         project,
-        p.packageName === dependencyName,
+        p.packageName === dependencyName
       );
       if (mountDefinition) {
         volumes.push(...mountDefinition);
@@ -325,7 +325,7 @@ export class ComposeBuilder {
       volumes,
       depends_on,
       networks,
-      ...((cfg.overrides && cfg.overrides[name]) || {}),
+      ...((cfg.overrides && cfg.overrides[name]) || {})
     };
 
     if (image) {
@@ -343,7 +343,7 @@ export class ComposeBuilder {
     dependencyName: string,
     cfg: BuilderConfiguration,
     project: ComputedProjectInfo,
-    self?: boolean,
+    self?: boolean
   ): string[] {
     const pkgInfo = project.packages.get(dependencyName);
     const mounts: string[] = [];
@@ -356,7 +356,7 @@ export class ComposeBuilder {
       // map the local `src` and `package.json` into the container
       const filePaths = ["src", "package.json"];
       mounts.push(
-        ...filePaths.map(p => this.generateSelfFileMount(pkgInfo, p)),
+        ...filePaths.map(p => this.generateSelfFileMount(pkgInfo, p))
       );
 
       // Mount transpiled artifacts to the packages volume
@@ -365,7 +365,7 @@ export class ComposeBuilder {
         const targetPath = `${path.join(
           this.projectConfig.workspaceDir || "/opt",
           pkgInfo.relativePath,
-          "dist",
+          "dist"
         )}`;
 
         mounts.push(this.buildVolumeMapEntry(sourcePath, targetPath));
@@ -379,12 +379,12 @@ export class ComposeBuilder {
       const sourcePath = `${path.join(
         this.config.projectRoot,
         pkgInfo.relativePath,
-        "src",
+        "src"
       )}`;
       const targetPath = `${path.join(
         this.projectConfig.workspaceDir || "/opt",
         pkgInfo.relativePath,
-        "src",
+        "src"
       )}`;
       mounts.push(this.buildVolumeMapEntry(sourcePath, targetPath));
     }
@@ -393,7 +393,7 @@ export class ComposeBuilder {
       const targetPath = `${path.join(
         this.projectConfig.workspaceDir || "/opt",
         pkgInfo.relativePath,
-        "dist",
+        "dist"
       )}`;
       mounts.push(this.buildVolumeMapEntry(sourcePath, targetPath));
     }
@@ -403,13 +403,13 @@ export class ComposeBuilder {
 
   private generateSelfFileMount(
     pkgInfo: ComputedPackageInfo,
-    filePath: string,
+    filePath: string
   ): string {
     const sourcePath = `./${path.join(pkgInfo.relativePath, filePath)}`;
     const targetPath = path.join(
       this.projectConfig.workspaceDir || "/opt",
       pkgInfo.relativePath,
-      filePath,
+      filePath
     );
 
     return `${sourcePath}:${targetPath}`;
@@ -417,7 +417,7 @@ export class ComposeBuilder {
 
   private async getComposeServices<T extends MaverickServiceConfig>(
     type: keyof MaverickServiceConfig,
-    configuration: BuilderConfiguration<T>,
+    configuration: BuilderConfiguration<T>
   ): Promise<CompleteMaverickDeclaration> {
     const services: CompleteMaverickDeclaration = {};
 
@@ -445,7 +445,7 @@ export class ComposeBuilder {
         if (type === "packages" || type === "services") {
           this.logger.trace(
             "Skipping package that was not found in project",
-            serviceName,
+            serviceName
           );
           continue;
         }
@@ -462,7 +462,7 @@ export class ComposeBuilder {
 
       if (serviceKey in services) {
         throw new Error(
-          "A duplicate name was found when transformed to URL safe strings",
+          "A duplicate name was found when transformed to URL safe strings"
         );
       }
 
@@ -470,12 +470,12 @@ export class ComposeBuilder {
         project[serviceName],
         allDefaults,
         typeDefaults,
-        serviceOverride,
+        serviceOverride
       );
 
       this.logger.trace(
         `Built ${type} field (${serviceName}) with values`,
-        service,
+        service
       );
 
       services[serviceKey] = service;
@@ -484,21 +484,19 @@ export class ComposeBuilder {
     return services;
   }
 
-  private serviceKeysOf(
-    project: MaverickDeclaration,
-  ) {
+  private serviceKeysOf(project: MaverickDeclaration) {
     return Object.keys(project || {});
   }
 
   private buildNetworks(): { [name: string]: object } {
     return this.projectConfig.networks!.reduce(
       (map, name) => ({ ...map, [name]: {} }),
-      {},
+      {}
     );
   }
 
   private buildVolumes(
-    packages: CompleteMaverickDeclaration,
+    packages: CompleteMaverickDeclaration
   ): { [name: string]: {} } {
     return Object.keys(packages)
       .map(name => `${name}-data`)
@@ -508,7 +506,7 @@ export class ComposeBuilder {
   private processPackageTemplate(
     pkgInfo: ComputedPackageInfo,
     projInfo: ComputedProjectInfo,
-    input?: any,
+    input?: any
   ): any {
     if (input === undefined) {
       return input;
@@ -518,9 +516,9 @@ export class ComposeBuilder {
       return input.reduce(
         (list, value) => [
           ...list,
-          this.processPackageTemplate(pkgInfo, projInfo, value),
+          this.processPackageTemplate(pkgInfo, projInfo, value)
         ],
-        [],
+        []
       );
     }
 
@@ -528,29 +526,29 @@ export class ComposeBuilder {
       return Object.keys(input).reduce(
         (map: Indexable, key: string | number) => ({
           ...map,
-          [key]: this.processPackageTemplate(pkgInfo, projInfo, input[key]),
+          [key]: this.processPackageTemplate(pkgInfo, projInfo, input[key])
         }),
-        {},
+        {}
       );
     }
 
     const conversions: ConversionMap = {
       safePackageName: pkgInfo.safePackageName,
       packageName: pkgInfo.packageName,
-      dependencyHash: Base64.fromInt(pkgInfo.dependencyHash),
+      dependencyHash: Base64.fromInt(pkgInfo.dependencyHash)
     };
 
     // Include parameterized string replacements here
     return Object.keys(conversions).reduce(
       (output: string, key: string) =>
         output.replace(`{{ ${key} }}`, conversions[key as keyof ConversionMap]),
-      input,
+      input
     );
   }
 
   private processServicesTemplate(
     svcMap: CompleteMaverickDeclaration,
-    input?: any,
+    input?: any
   ): any {
     if (input === undefined) {
       return input;
@@ -559,7 +557,7 @@ export class ComposeBuilder {
     if (input instanceof Array) {
       return input.reduce(
         (list, value) => [...list, this.processServicesTemplate(svcMap, value)],
-        [],
+        []
       );
     }
 
@@ -567,9 +565,9 @@ export class ComposeBuilder {
       return Object.keys(input).reduce(
         (map: Indexable, key: string | number) => ({
           ...map,
-          [key]: this.processServicesTemplate(svcMap, input[key]),
+          [key]: this.processServicesTemplate(svcMap, input[key])
         }),
-        {},
+        {}
       );
     }
 
@@ -586,7 +584,7 @@ export class ComposeBuilder {
     template: string,
     match: RegExpExecArray,
     svcMap: CompleteMaverickDeclaration,
-    levels = 0,
+    levels = 0
   ): DockerComposeService[keyof DockerComposeService] {
     if (levels >= Object.keys(svcMap).length) {
       throw new Error("We have exceeded the maximum template recursion depth!");
@@ -607,7 +605,7 @@ export class ComposeBuilder {
         let value = svcMap[arg][func];
         if (!value) {
           throw new Error(
-            `Referenced a(n) ${func} field that does not exist! Received: ${arg}`,
+            `Referenced a(n) ${func} field that does not exist! Received: ${arg}`
           );
         }
 
@@ -622,7 +620,7 @@ export class ComposeBuilder {
             value,
             parameterMatch,
             svcMap,
-            levels + 1,
+            levels + 1
           );
           // @ts-ignore
           svcMap[arg][func] = value;
@@ -647,27 +645,27 @@ export class ComposeBuilder {
   }
 
   private getBuiltinInfrastructure(
-    defaults: MaverickConfigDefaults,
+    defaults: MaverickConfigDefaults
   ): CompleteMaverickDeclaration {
     const builtinKeys: (keyof DataSourceConfiguration)[] = [
       "minio",
       "mysql",
       "ngrok",
-      "redis",
+      "redis"
     ];
 
     return builtinKeys.reduce(
       (declarations, key) => ({
         ...declarations,
-        ...this.builtinAsDeclaration(key, defaults),
+        ...this.builtinAsDeclaration(key, defaults)
       }),
-      {},
+      {}
     );
   }
 
   private builtinAsDeclaration(
     name: keyof DataSourceConfiguration,
-    defaults: MaverickConfigDefaults,
+    defaults: MaverickConfigDefaults
   ) {
     const service = builtins[name]!(this.projectConfig[name], defaults);
     return service ? { [name]: service } : {};
@@ -700,10 +698,10 @@ const composeServiceKeys = new Set<keyof DockerComposeService>([
   "stdin_open",
   "tty",
   "command",
-  "depends_on",
+  "depends_on"
 ]);
 function isDockerComposeServiceKey(
-  input: string,
+  input: string
 ): input is keyof DockerComposeService {
   return composeServiceKeys.has(input as keyof DockerComposeService);
 }

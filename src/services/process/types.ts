@@ -19,5 +19,5 @@ export interface ProcessExitPayload {
 
 export enum ProcessDataType {
   Message,
-  Exit,
+  Exit
 }

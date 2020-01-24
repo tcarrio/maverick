@@ -11,19 +11,19 @@ export class Runner {
   public async spawn(
     command: string,
     args: string[] = [],
-    opts: SpawnOptions = {},
+    opts: SpawnOptions = {}
   ) {
     const dirStr = opts.cwd ? ` in ${opts.cwd}` : "";
     this.logger.trace(`Spawning${dirStr}:`, command, ...args);
     await spawn(command, args, { ...opts, ...this.spawnOpts }).catch(err =>
-      this.handleError(err),
+      this.handleError(err)
     );
   }
 
   public spawnSync(
     command: string,
     args: string[] = [],
-    opts: SpawnSyncOptions = {},
+    opts: SpawnSyncOptions = {}
   ) {
     const dirStr = opts.cwd ? ` in ${opts.cwd}` : "";
     this.logger.trace(`Spawning${dirStr}:`, command, ...args);
@@ -37,14 +37,14 @@ export class Runner {
       return {
         stdout: proc.stdout,
         stderr: proc.stderr,
-        status: 0,
+        status: 0
       };
     }
 
     return {
       stdout: "",
       stderr: "",
-      status: proc,
+      status: proc
     };
   }
 

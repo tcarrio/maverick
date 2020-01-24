@@ -3,7 +3,7 @@ import { hash } from "../../util/hash";
 import { PackageJsonDependencies } from "../../types";
 
 export function calculateDependencyHash(
-  packageDependencies: PackageJsonDependencies,
+  packageDependencies: PackageJsonDependencies
 ) {
   return hash(JSON.stringify(sortObjectKeys(packageDependencies)));
 }

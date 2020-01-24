@@ -8,7 +8,7 @@ export function Log(level: LogLevel): MethodDecorator;
 export function Log(
   target: object,
   propertyKey: string | symbol,
-  descriptor: PropertyDescriptor,
+  descriptor: PropertyDescriptor
 ): void;
 export function Log(...args: any[]): void | MethodDecorator {
   if (args.length === 1) {
@@ -33,15 +33,15 @@ function annotate<T>(
   target: object,
   propertyKey: string | symbol,
   descriptor: PropertyDescriptor,
-  level: LogLevel = "trace",
+  level: LogLevel = "trace"
 ) {
   const originalMethod = descriptor.value;
   descriptor.value = async function(...args: any[]) {
     const logger = Container.get(Logger);
     logger[level](
       `${target.constructor.name}:${propertyKey.toString()}:${JSON.stringify(
-        args,
-      )}`,
+        args
+      )}`
     );
     return originalMethod.apply(this, args);
   };

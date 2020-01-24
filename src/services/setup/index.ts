@@ -5,20 +5,18 @@ import path from "path";
 
 @Service()
 export class SetupService {
-  public constructor(
-    private logger: Logger,
-  ) {}
+  public constructor(private logger: Logger) {}
 
   public async setup(config: Config, ...args: string[]) {
     this.logger.trace("Starting setup");
-    this.logger.trace(`Setup path is ${config.setup.path}`)
+    this.logger.trace(`Setup path is ${config.setup.path}`);
     this.logger.trace(`__dirname is ${__dirname}`);
 
     if (!config.setup.exists) {
       throw new Error("Cannot run setup without a setup script!");
     }
 
-    let relativeModulePath = ""
+    let relativeModulePath = "";
     try {
       relativeModulePath = path.relative(__dirname, config.setup.path);
       this.logger.trace(`Set relative path to ${relativeModulePath}`);
@@ -27,7 +25,7 @@ export class SetupService {
       this.logger.error(relativeModulePath);
       throw err;
     }
-    
+
     this.logger.trace("__dirname is ", __dirname);
     this.logger.trace("relativeModulePath is ", relativeModulePath);
     this.logger.trace("config.setup.path is ", config.setup.path);
@@ -43,7 +41,9 @@ export class SetupService {
     try {
       if (typeof script.init === "function") {
         this.logger.trace("Running setup script");
-        await script.init(config, ...args).catch((e: Error) => this.logger.error(e.name));
+        await script
+          .init(config, ...args)
+          .catch((e: Error) => this.logger.error(e.name));
       } else {
         this.logger.trace("Setup script has no init function");
       }

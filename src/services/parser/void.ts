@@ -10,7 +10,7 @@ export class VoidProjectParser {
     return {
       pwd: this.config.projectRoot,
       language: "unknown",
-      packages: new Map(),
+      packages: new Map()
     };
   }
 }

@@ -22,7 +22,7 @@ export class Config implements IConfig {
 
   public constructor(private logger: Logger) {
     this.cwd = process.cwd();
-    
+
     try {
       this.projectRoot = this.findRoot();
 
@@ -30,9 +30,12 @@ export class Config implements IConfig {
       this.compose = this.config.compose || "docker-compose";
       this.projectName = this.config.name || "maverick";
 
-      const setupPath = path.join(this.projectRoot, (this.config.setup || "maverick.setup.js"));
+      const setupPath = path.join(
+        this.projectRoot,
+        this.config.setup || "maverick.setup.js"
+      );
       const exists = existsSync(setupPath);
-      this.setup = { exists, path: exists ? setupPath : "" }
+      this.setup = { exists, path: exists ? setupPath : "" };
 
       this.valid = true;
     } catch (err) {
@@ -46,7 +49,7 @@ export class Config implements IConfig {
     } catch (err) {
       this.logger.debug("A valid Maverick project could not be found");
       throw err;
-    }      
+    }
   }
 
   private isLerna(): boolean {
@@ -92,7 +95,7 @@ export class Config implements IConfig {
           );
         }
       }
-    } catch (err) {}    
+    } catch (err) {}
     throw new ProjectNotFoundError();
   }
 
@@ -126,5 +129,5 @@ export const defaultConfig: MaverickRootConfig = {
   networks: [],
   workspaceDir: "/opt",
   language: "typescript",
-  projectType: "lerna",
+  projectType: "lerna"
 };

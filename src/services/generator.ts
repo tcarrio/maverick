@@ -16,14 +16,14 @@ export class Generator {
     skipInvalid: true,
     lineWidth: 2,
     flowLevel: -1,
-    noCompatMode: false,
+    noCompatMode: false
   };
   private compose: DockerComposeDefinition | null = null;
 
   public constructor(
     private logger: Logger,
     private config: Config,
-    private composeBuilder: ComposeBuilder,
+    private composeBuilder: ComposeBuilder
   ) {}
 
   public async generate(toFile: false): Promise<Buffer>;
@@ -57,7 +57,7 @@ export class Generator {
   private writeToFile(compose: object) {
     fs.writeFileSync(
       path.join("/tmp", "docker-compose.yml"),
-      yaml.dump(compose, this.yamlConfig),
+      yaml.dump(compose, this.yamlConfig)
     );
   }
 

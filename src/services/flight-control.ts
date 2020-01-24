@@ -12,7 +12,7 @@ export class FlightControlService {
   public constructor(
     private logger: Logger,
     private config: Config,
-    private composeBuilder: ComposeBuilder,
+    private composeBuilder: ComposeBuilder
   ) {}
 
   @GenerateDockerCompose()
@@ -39,7 +39,7 @@ export class FlightControlService {
     fs.writeFileSync(
       path.join(this.config.projectRoot, ".maverick"),
       `NGROK_SUBDOMAIN=${args[0]}
-NGROK_AUTH=${args[1]}`,
+NGROK_AUTH=${args[1]}`
     );
   }
 }

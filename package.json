@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -40,6 +40,7 @@
     "jest": "^24.9.0",
     "jest-junit": "^6.4.0",
     "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
     "ts-jest": "^24.3.0",
     "ts-node": "^8.6.2",
     "typescript": "3.4.5"

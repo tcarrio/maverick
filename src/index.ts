@@ -10,7 +10,7 @@ import { Runner } from "./services/process";
 
 async function main() {
   try {
-    await Container.get(Maverick).run()
+    await Container.get(Maverick).run();
   } catch (err) {
     startupError(err);
   }
@@ -24,4 +24,4 @@ function startupError(err: Error) {
 main();
 
 /** exports for plugins */
-export { IConfig , Logger, Runner };
+export { IConfig, Logger, Runner };

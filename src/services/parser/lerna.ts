@@ -7,7 +7,7 @@ import {
   ProjectLanguage,
   PackageType,
   PackageJsonDependencies,
-  PackageDependencies,
+  PackageDependencies
 } from "../../types";
 import { Runner } from "../process";
 import { AbstractProjectParser } from "./abstract";
@@ -37,7 +37,7 @@ export class LernaProjectParser extends AbstractProjectParser {
       const packages = new Map<string, ComputedPackageInfo>();
 
       const lernaPackagesOutput = await this.runner.exec(
-        "lerna list -a --json",
+        "lerna list -a --json"
       );
 
       if (lernaPackagesOutput.status !== 0) {
@@ -62,11 +62,11 @@ export class LernaProjectParser extends AbstractProjectParser {
             relativePath: this.getRelativePath(p),
             language: await this.getPackageLanguage(p),
             type: await this.getPackageType(p),
-            dotenv: await this.hasDotEnv(p),
+            dotenv: await this.hasDotEnv(p)
           };
 
           packages.set(p.name, packageInfo);
-        }),
+        })
       );
 
       const language = this.findProjectLanguage(packages);
@@ -74,7 +74,7 @@ export class LernaProjectParser extends AbstractProjectParser {
       const project: ComputedProjectInfo = {
         pwd,
         packages,
-        language,
+        language
       };
 
       this._parsed = project;
@@ -109,7 +109,7 @@ export class LernaProjectParser extends AbstractProjectParser {
    * @param p: LernaPackageInfo
    */
   private async getPackageLanguage(
-    p: LernaPackageInfo,
+    p: LernaPackageInfo
   ): Promise<PackageLanguage> {
     const tsconfigFound = await exists(path.join(p.location, "tsconfig.json"));
     return tsconfigFound ? "typescript" : "javascript";
@@ -122,36 +122,36 @@ export class LernaProjectParser extends AbstractProjectParser {
    * @param p: LernaPackageInfo
    */
   private async getDependencies(
-    p: LernaPackageInfo,
+    p: LernaPackageInfo
   ): Promise<Pick<ComputedPackageInfo, "dependencies" | "dependencyHash">> {
     const [lernaDependencies, packageDependencies] = await Promise.all([
       this.collectLernaDependencies(p),
-      this.collectPackageDependencies(p),
+      this.collectPackageDependencies(p)
     ]);
 
     const dependencies = this.calculatePackageDependencies(
       lernaDependencies,
-      packageDependencies,
+      packageDependencies
     );
     const dependencyHash = calculateDependencyHash(packageDependencies);
 
     return {
       dependencies,
-      dependencyHash,
+      dependencyHash
     };
   }
 
   private async collectLernaDependencies(
-    p: LernaPackageInfo,
+    p: LernaPackageInfo
   ): Promise<string[]> {
     const proc = await this.runner.exec(
-      `lerna list --include-filtered-dependencies --scope=${p.name}`,
+      `lerna list --include-filtered-dependencies --scope=${p.name}`
     );
     return proc.stdout.split("\n").filter(x => !!x);
   }
 
   private async collectPackageDependencies(
-    p: LernaPackageInfo,
+    p: LernaPackageInfo
   ): Promise<PackageJsonDependencies> {
     const buffer = await readFile(path.join(p.location, "package.json"));
     const packageManifest = JSON.parse(buffer.toString());
@@ -162,11 +162,11 @@ export class LernaProjectParser extends AbstractProjectParser {
 
   private calculatePackageDependencies(
     lernaDeps: string[],
-    packageDeps: PackageJsonDependencies,
+    packageDeps: PackageJsonDependencies
   ): PackageDependencies {
     const packageDependencySet = new Set([
       ...Object.keys(packageDeps.devDependencies),
-      ...Object.keys(packageDeps.dependencies),
+      ...Object.keys(packageDeps.dependencies)
     ]);
 
     const direct = lernaDeps.filter(x => packageDependencySet.has(x));
@@ -186,7 +186,7 @@ export class LernaProjectParser extends AbstractProjectParser {
   }
 
   private findProjectLanguage(
-    packages: Map<string, ComputedPackageInfo>,
+    packages: Map<string, ComputedPackageInfo>
   ): ProjectLanguage {
     return (
       Array.from(packages.keys()).reduce(
@@ -205,7 +205,7 @@ export class LernaProjectParser extends AbstractProjectParser {
 
           return type;
         },
-        undefined,
+        undefined
       ) || "unknown"
     );
   }

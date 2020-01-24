@@ -14,43 +14,43 @@ export class ProgramBuilder {
       .usage("[action]")
       .option(
         "-b, --build",
-        "build all or certain services in the docker-compose.yml",
+        "build all or certain services in the docker-compose.yml"
       )
       .option(
         "-d, --down",
-        "take down all or certain services in the docker-compose.yml",
+        "take down all or certain services in the docker-compose.yml"
       )
       .option(
         "-u, --up",
-        "launch a certain or all of the database, redis, and services",
+        "launch a certain or all of the database, redis, and services"
       )
       .option("-r, --restart", "restart service name(s)")
       .option(
         "-R, --reload",
-        "reload services with updates to env_file and docker-compose.yml",
+        "reload services with updates to env_file and docker-compose.yml"
       )
       .option(
         "-s, --setup",
         "runs the setup script provided by the project",
         collectStrings,
-        false,
+        false
       )
       .option(
         "-l, --list [filter]",
-        "list services currently defined for local development",
+        "list services currently defined for local development"
       )
       .option("-p, --ps", "List existing containers")
       .option(
         "-n, --ngrok [subdomain] [auth_token]",
-        "Persist your subdomain and auth token to the Maverick config",
+        "Persist your subdomain and auth token to the Maverick config"
       )
       .option(
         "-g, --generate",
-        "Generate a new Docker Compose using the maverick.yml config",
+        "Generate a new Docker Compose using the maverick.yml config"
       )
       .option(
         "-i, --init",
-        "Initialize a Maverick configuration in the current directory",
+        "Initialize a Maverick configuration in the current directory"
       )
       .parse(process.argv);
   }
@@ -67,7 +67,7 @@ export class ProgramBuilder {
       reload: this.program.reload,
       restart: this.program.restart,
       setup: this.program.setup,
-      up: this.program.up,
+      up: this.program.up
     };
 
     return options;
