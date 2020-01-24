@@ -41,6 +41,12 @@ On the other hand, services incorporate the transpiled source of dependencies. O
 are mounted to a service, providing a central location for packages to watch for changes and update when
 a direct dependency is impacted by a source code change.
 
+Most importantly, the best way to get started with your project is to include the supported commands
+for automatic detection of packages/services by Maverick. Just add an `npm` script to get started.
+With packages, add `maverick:watch`. For services, add `maverick:start`. These will be detected when
+processing your monorepository for packages and automatically fulfilled as packages and services to be
+included in the Docker Compose.
+
 ## Description
 
 This project means to provide an easier manner of interacting with our docker-compose resources. The
