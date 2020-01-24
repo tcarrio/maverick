@@ -17,6 +17,8 @@ deploy:
   provider: npm
   email: "tom@carrio.dev"
   api_key: "$NPM_ACCESS_TOKEN"
+  on:
+    branch: master
 
 env:
   global:
