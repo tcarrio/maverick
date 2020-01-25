@@ -20,7 +20,9 @@
     "dist"
   ],
   "bin": {
-    "maverick": "./dist/index.js"
+    "maverick": "./dist/cmd/maverick.js",
+    "maverick-compose": "./dist/cmd/compose.js",
+    "maverick-tool": "./dist/cmd/tool.js"
   },
   "repository": {
     "type": "git",

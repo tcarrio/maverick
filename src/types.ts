@@ -144,9 +144,9 @@ export interface BuilderConfiguration<
   overrides?: DockerComposeOverrides;
 }
 
-export interface Indexable {
-  [key: string]: any;
-  [key: number]: any;
+export interface Indexable<T = any> {
+  [key: string]: T;
+  [key: number]: T;
 }
 
 export interface SetupConfiguration {

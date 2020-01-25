@@ -15,9 +15,5 @@
     "strict": true,
     "target": "es2017"
   },
-  "exclude": [
-    "node_modules",
-    "!node_modules/@types",
-    "dist"
-  ]
+  "exclude": ["node_modules", "!node_modules/@types", "dist", "test"]
 }

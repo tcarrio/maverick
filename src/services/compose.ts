@@ -138,6 +138,22 @@ export class ComposeService {
     ]);
   }
 
+  @GenerateDockerCompose()
+  public async list(filter?: string) {
+    const compose = await this.composeBuilder.getDefinition();
+
+    if (compose.services) {
+      const services = Object.keys(compose.services);
+      const svcToLog = services
+        .filter(s => s.indexOf(filter || "") > -1)
+        .map(s => "\n\t" + s)
+        .join("");
+      this.logger.info("Found the following services:", svcToLog);
+    } else {
+      this.logger.info("Services were not found in the docker-compose.yml");
+    }
+  }
+
   private async runCommands(
     commands: Command[],
     delayTime: number = 1000
@@ -161,7 +177,7 @@ export class ComposeService {
       return;
     }
     await delay(delayTime /* ms */);
-    return this.runCommands([...commands.slice(1)]);
+    await this.runCommands([...commands.slice(1)]);
   }
 
   //@ts-ignore
