@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "files": [
-    "dist"
+    "dist/*"
   ],
   "bin": {
     "maverick": "./dist/index.js"
