@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -13,6 +13,7 @@
     "build": "tsc",
     "prebuild:prod": "[ -d dist ] && rm -rf dist || true",
     "build:prod": "tsc -p tsconfig.prod.json",
+    "postbuild:prod": "[ -f dist/index.js ]",
     "prepare": "npm run build:prod",
     "test": "jest"
   },
