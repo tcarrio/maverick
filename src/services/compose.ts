@@ -89,6 +89,33 @@ export class ComposeService {
   }
 
   @GenerateDockerCompose()
+  public async delete(args: string[]) {
+    const phases = await this.getPhases(args, undefined, false);
+
+    const commands: SpawnCommand[] = [];
+    if (args.length > 0) {
+      commands.push(
+        ...phases.map(
+          services =>
+            [
+              this.compose,
+              [...this.bufferArgs, "rm", "-f", ...services],
+              this.spawnOpts
+            ] as Command
+        )
+      );
+    } else {
+      return this.logger.warn(
+        "Cannot delete services if one is not specified!"
+      );
+    }
+
+    this.logDelete(commands.length);
+
+    await this.runCommands(commands, 0);
+  }
+
+  @GenerateDockerCompose()
   public async restart(args: string[]) {
     const phases = await this.getPhases(args);
 
@@ -287,6 +314,7 @@ export class ComposeService {
 
   private readonly logUp = this.logTemplate("Spinning up Maverick");
   private readonly logDown = this.logTemplate("Spinning down Maverick");
+  private readonly logDelete = this.logTemplate("Deleting Maverick service(s)");
   private readonly logBuild = this.logTemplate("Building with Maverick");
   private readonly logRestart = this.logTemplate("Restarting with Maverick");
 }

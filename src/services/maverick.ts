@@ -60,6 +60,11 @@ export class Maverick {
         await this.compose.down(this.args);
       }
 
+      if (this.options.delete) {
+        hasRun = true;
+        await this.compose.delete(this.args);
+      }
+
       if (this.options.up) {
         hasRun = true;
         await this.compose.up(this.args);
