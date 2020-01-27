@@ -80,6 +80,7 @@ export class Config implements IConfig {
       let dir = this.cwd;
       let attempts = 0;
       while (attempts < maxTraversals) {
+        this.logger.trace(`Searching ${dir} for ${searchFile}`);
         const contents = fs.readdirSync(dir);
         const index = contents.indexOf(searchFile);
         if (index > -1) {
