@@ -1,5 +1,6 @@
 import { Service } from "typedi";
 import { Config } from "../../config";
+import { Logger } from "../../services/logger";
 import {
   ComputedPackageInfo,
   ComputedProjectInfo,
@@ -21,7 +22,11 @@ import { calculateDependencyHash } from "./shared";
 export class LernaProjectParser extends AbstractProjectParser {
   private _parsed: ComputedProjectInfo | null = null;
 
-  public constructor(private config: Config, private runner: Runner) {
+  public constructor(
+    private config: Config,
+    private logger: Logger,
+    private runner: Runner
+  ) {
     super();
   }
 
@@ -98,7 +103,14 @@ export class LernaProjectParser extends AbstractProjectParser {
    * @param p: LernaPackageInfo
    */
   private getRelativePath(p: LernaPackageInfo): string {
-    return p.location.replace(this.config.projectRoot, "").replace(/^\//, "");
+    this.logger.trace(
+      `Getting relative path of ${p.name} with location ${p.location} under project with root ${this.config.projectRoot}`
+    );
+    const relativePath = p.location
+      .replace(this.config.projectRoot, "")
+      .replace(/^\//, "");
+    this.logger.trace(`Found relative path ${relativePath} for ${p.name}`);
+    return relativePath;
   }
 
   /**
