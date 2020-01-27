@@ -17,6 +17,7 @@ export class ProgramBuilder {
         "-b, --build",
         "build all or certain services in the docker-compose.yml"
       )
+      .option("-D, --delete", "delete a stopped service or services")
       .option(
         "-d, --down",
         "take down all or certain services in the docker-compose.yml"
@@ -59,6 +60,7 @@ export class ProgramBuilder {
   public getOptions(): Options {
     const options = {
       build: this.program.build,
+      delete: this.program.delete,
       down: this.program.down,
       generate: this.program.generate,
       init: this.program.init,
@@ -99,6 +101,7 @@ export type OptionalStrings = string[] | boolean;
 export type OptionalString = string | boolean;
 export type Options = Partial<{
   build: OptionalStrings;
+  delete: OptionalStrings;
   down: OptionalStrings;
   generate: boolean;
   init: boolean;
