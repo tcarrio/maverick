@@ -3,7 +3,7 @@ import { Indexable } from "../types";
 const digitsStr =
   //   0       8       16      24      32      40      48      56     63
   //   v       v       v       v       v       v       v       v      v
-  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+-";
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-";
 const digits = digitsStr.split("");
 const digitsMap: Indexable = digits.reduce(
   (map, digit, i) => ({ ...map, [i]: digit }),
