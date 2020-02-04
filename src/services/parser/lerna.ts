@@ -190,10 +190,9 @@ export class LernaProjectParser extends AbstractProjectParser {
   private async getPackageType(p: LernaPackageInfo): Promise<PackageType> {
     const buffer = await readFile(path.join(p.location, "package.json"));
     const packageManifest = JSON.parse(buffer.toString());
-    const isPackage =
-      Object.keys(packageManifest.scripts).indexOf("maverick:watch") >= 0;
-    const isService =
-      Object.keys(packageManifest.scripts).indexOf("maverick:start") >= 0;
+    const scripts = Object.keys(packageManifest.scripts || {});
+    const isPackage = scripts.indexOf("maverick:watch") >= 0;
+    const isService = scripts.indexOf("maverick:start") >= 0;
     return isService ? "service" : isPackage ? "package" : "unknown";
   }
 
