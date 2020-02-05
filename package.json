@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",

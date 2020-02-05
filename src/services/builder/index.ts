@@ -282,7 +282,16 @@ export class ComposeBuilder {
     ];
 
     for (const dependencyName of allDependencies) {
-      if (dependencyName !== p.packageName) {
+      if (dependencyName === p.packageName) {
+        continue;
+      }
+
+      const dependencyDefinition = project.packages.get(dependencyName);
+      if (!dependencyDefinition) {
+        continue;
+      }
+
+      if (dependencyDefinition.type !== "unknown") {
         depends_on.push(convertToSafe(dependencyName));
       }
     }
