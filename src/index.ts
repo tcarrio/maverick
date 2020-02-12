@@ -7,6 +7,7 @@ import { Maverick } from "./services/maverick";
 import { IConfig } from "./config/interface";
 import { Logger } from "./services/logger";
 import { Runner } from "./services/process";
+import { checkForUpdate } from "./util/check-for-update";
 
 async function main() {
   try {
@@ -22,6 +23,7 @@ function startupError(err: Error) {
 }
 
 main();
+checkForUpdate();
 
 /** exports for plugins */
 export { IConfig, Logger, Runner };

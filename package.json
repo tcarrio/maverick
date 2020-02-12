@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.36",
+  "version": "0.1.37",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -39,6 +39,7 @@
     "@types/glob": "^7.1.1",
     "@types/jest": "25.1.2",
     "@types/js-yaml": "^3.12.1",
+    "@types/update-notifier": "^2.5.0",
     "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
     "nodemon": "^2.0.2",
@@ -56,6 +57,7 @@
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.16",
-    "typedi": "^0.8.0"
+    "typedi": "^0.8.0",
+    "update-notifier": "^4.0.0"
   }
 }

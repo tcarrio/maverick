@@ -7,6 +7,7 @@ import { SetupService } from "./setup";
 import { Generator } from "./generator";
 import { Config } from "../config";
 import { InitService } from "./init";
+import { convertToSafe } from "../util/safe-name";
 
 @Service()
 export class Maverick {
@@ -24,7 +25,7 @@ export class Maverick {
     private config: Config
   ) {
     this.options = program.getOptions();
-    this.args = program.getArgs();
+    this.args = this.translateArgs(program.getArgs());
   }
 
   public async run() {
@@ -112,6 +113,10 @@ export class Maverick {
     await this.setup.setup(this.config, ...args).catch((err: Error) => {
       this.logger.error(`Unhandled error during setup: ${err.name}`);
     });
+  }
+
+  private translateArgs(args: string[]): string[] {
+    return args.map(convertToSafe);
   }
 }
 
