@@ -1,6 +1,6 @@
 {
   "name": "@0xc/maverick",
-  "version": "0.1.39",
+  "version": "0.1.40",
   "description": "Orchestrated containerized development for monorepositories",
   "private": false,
   "main": "dist/index.js",
@@ -56,6 +56,7 @@
     "joi": "^14.3.1",
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.4",
     "source-map-support": "^0.5.16",
     "typedi": "^0.8.0",
     "update-notifier": "^4.0.0"
