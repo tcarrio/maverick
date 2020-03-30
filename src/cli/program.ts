@@ -9,7 +9,6 @@ import { internalName } from "../globals";
 export class ProgramBuilder {
   private program: Command;
   public constructor() {
-    // @ts-ignore
     this.program = new Command(internalName)
       .description(getDescription())
       .version(getVersion())
